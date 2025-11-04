@@ -30,35 +30,82 @@
     a { color: inherit; text-decoration: none; }
 
     /* NAVBAR */
-    header.site-nav {
-      width: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 50;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    .nav-container {
       display: flex;
       justify-content: center;
-      padding: 20px 40px;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      padding: 20px 0;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 25px;
+      height: 18px;
+      cursor: pointer;
+      position: absolute;
+      right: 30px;
+      top: 22px;
+      z-index: 100;
+    }
+
+    .menu-toggle .bar {
+      height: 3px;
+      width: 100%;
+      background-color: #fff;
+      border-radius: 10px;
     }
 
     .navlinks {
       display: flex;
       gap: 50px;
+      font-size: 1rem;
+      letter-spacing: 1px;
     }
 
     .navlinks a {
-      color: var(--accent);
-      font-family: 'Cormorant Garamond', serif;
-      text-decoration: none;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-      transition: color 0.2s ease;
+      transition: color 0.3s ease;
     }
 
-    .navlinks a:hover { color: var(--muted); }
+    .navlinks a:hover {
+      color: #cfcfcf;
+    }
+
+    @media (max-width: 768px) {
+      .navlinks {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.9);
+        text-align: center;
+        padding: 20px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .navlinks.active {
+        display: flex;
+      }
+
+      .navlinks a {
+        padding: 12px 0;
+        font-size: 1.1rem;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      header.site-nav {
+        justify-content: flex-start;
+        padding: 20px;
+      }
+    }
 
     /* HERO */
     .hero {
@@ -87,6 +134,13 @@
       font-size: 1.1rem;
       max-width: 720px;
       line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.4rem;
+        letter-spacing: 2px;
+      }
     }
 
     /* MID STRIP */
@@ -119,6 +173,7 @@
       0%, 100% { transform: translateY(0); opacity: 0.6; }
       50% { transform: translateY(6px); opacity: 1; }
     }
+
 
     /* PROJECT SECTIONS */
     .project-sections {
@@ -226,17 +281,6 @@
       border-color: #fff;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 992px) {
-      .thumb-row { flex-wrap: wrap; }
-      .thumb-card { flex: 1 1 50%; height: 340px; }
-    }
-
-    @media (max-width: 640px) {
-      .thumb-card { flex: 1 1 100%; height: 260px; }
-      .thumb-card h3 { font-size: 1.4rem; }
-    }
-
     /* FOOTER */
     .modern-footer {
       background-color: #211c19;
@@ -301,15 +345,21 @@
 </head>
 
 <body>
-
-  <!-- NAV -->
+  <!-- NAVBAR -->
   <header class="site-nav">
-    <nav class="navlinks">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="projects.html">Projects</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+    <div class="nav-container">
+      <div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <nav class="navlinks" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
   </header>
 
   <!-- HERO -->
@@ -325,38 +375,31 @@
   </section>
 
   <!-- PROJECT SECTIONS -->
-<section class="project-sections">
-  <div class="thumb-row">
+  <section class="project-sections">
+    <div class="thumb-row">
+      <a href="ui-projects.html" class="thumb-card">
+        <img src="images/ui-thumb.jpg" alt="UI/UX Projects">
+        <div class="overlay"><h3>UI/UX</h3></div>
+      </a>
+      <a href="branding-projects.html" class="thumb-card">
+        <img src="images/branding-thumb.jpg" alt="Branding Projects">
+        <div class="overlay"><h3>Branding</h3></div>
+      </a>
+      <a href="ads-projects.html" class="thumb-card">
+        <img src="images/ads-thumb.jpg" alt="Advertising Projects">
+        <div class="overlay"><h3>Advertising</h3></div>
+      </a>
+      <a href="photo-projects.html" class="thumb-card">
+        <img src="images/photo-thumb.jpg" alt="Photography Projects">
+        <div class="overlay"><h3>Photography</h3></div>
+      </a>
+    </div>
+  </section>
 
-    <a href="ui-projects.html" class="thumb-card">
-      <img src="images/ui-thumb.jpg" alt="UI/UX Projects">
-      <div class="overlay"><h3>UI/UX</h3></div>
-    </a>
-
-    <a href="branding-projects.html" class="thumb-card">
-      <img src="images/branding-thumb.jpg" alt="Branding Projects">
-      <div class="overlay"><h3>Branding</h3></div>
-    </a>
-
-    <a href="ads-projects.html" class="thumb-card">
-      <img src="images/ads-thumb.jpg" alt="Advertising Projects">
-      <div class="overlay"><h3>Advertising</h3></div>
-    </a>
-
-    <a href="photo-projects.html" class="thumb-card">
-      <img src="images/photo-thumb.jpg" alt="Photography Projects">
-      <div class="overlay"><h3>Photography</h3></div>
-    </a>
-
+  <!-- VIEW MORE -->
+  <div class="view-more-container">
+    <a href="projects.html" class="view-more-bar">View More</a>
   </div>
-</section>
-
-
- <!-- VIEW MORE -->
-<div class="view-more-container">
-  <a href="projects.html" class="view-more-bar">View More</a>
-</div>
-
 
   <!-- FOOTER -->
   <footer class="modern-footer">
@@ -382,6 +425,15 @@
     <p class="footer-copy">© 2025, Meenakshi Ramesh</p>
   </footer>
 
-  <script src="https://kit.fontawesome.com/3b2e1f2c76.js" crossorigin="anonymous"></script>
+  <!-- FIXED SCRIPT -->
+  <script>
+    const mobileMenu = document.getElementById("mobile-menu");
+    const navLinks = document.getElementById("nav-links");
+
+    mobileMenu.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+      mobileMenu.classList.toggle("open");
+    });
+  </script>
 </body>
 </html>

@@ -20,7 +20,7 @@
       --text: #ffffff;
       --muted: #aaaaaa;
       --accent: #ffffff;
-      --brown: #1a130f; /* rich dark brown hero */
+      --brown: #1a130f;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,8 +43,16 @@
       padding: 20px 40px;
       display: flex;
       justify-content: center;
+      align-items: center;
       z-index: 100;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
     }
 
     nav a {
@@ -58,6 +66,79 @@
     }
 
     nav a:hover { color: var(--muted); }
+
+    /* Hamburger icon */
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      color: white;
+      cursor: pointer;
+      position: absolute;
+      right: 40px;
+      top: 22px;
+      z-index: 110;
+    }
+
+    /* Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    /* Mobile menu */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      transition: all 0.3s ease;
+      z-index: 105;
+    }
+
+    .mobile-nav.active {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      color: #fff;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--muted);
+    }
+
+    /* Close button */
+    .close-btn {
+      position: absolute;
+      top: 25px;
+      right: 35px;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+    }
 
     /* HERO */
     .about-hero {
@@ -111,60 +192,36 @@
       margin: 70px 0;
     }
 
-	  .timeline-dot {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
-  height: 12px;
-  background: #fff;
-  border-radius: 50%;
-  z-index: 2;
-  top: 15px;
-}
-
-.timeline-content {
-  position: relative;
-  background: #141414;
-  border-radius: 14px;
-  padding: 30px 35px;
-  width: 45%;
-  text-align: left;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
-}
-
-.timeline h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.3rem;
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-
-.timeline p {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--muted);
-}
+    .timeline-dot {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      z-index: 2;
+      top: 15px;
+    }
 
     .timeline-content {
+      position: relative;
       background: #141414;
       border-radius: 14px;
       padding: 30px 35px;
       width: 45%;
       text-align: left;
-      position: relative;
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
     }
 
-    .timeline-content h3 {
+    .timeline h3 {
       font-family: 'Cormorant Garamond', serif;
-      margin-bottom: 8px;
-      font-size: 1.2rem;
-      font-weight: 600;
+      font-size: 1.3rem;
       color: var(--accent);
+      margin-bottom: 8px;
     }
 
-    .timeline-content p {
+    .timeline p {
       font-size: 0.95rem;
       line-height: 1.7;
       color: var(--muted);
@@ -242,11 +299,13 @@
     }
 
     /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .timeline-line { left: 12px; }
-      .timeline-content { width: calc(100% - 40px); left: 30px !important; }
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .hamburger { display: block; }
       .about-hero h1 { font-size: 2.5rem; }
       .about-hero p { font-size: 1rem; }
+      .timeline-line { left: 12px; }
+      .timeline-content { width: calc(100% - 40px); left: 30px !important; }
     }
   </style>
 </head>
@@ -255,6 +314,9 @@
 
   <!-- NAV -->
   <header>
+    <div class="hamburger" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
     <nav>
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
@@ -262,6 +324,18 @@
       <a href="contact.html">Contact</a>
     </nav>
   </header>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav" id="mobileNav">
+    <div class="close-btn" onclick="closeMenu()">&times;</div>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
 
   <!-- HERO -->
   <section class="about-hero" data-aos="fade-up">
@@ -273,53 +347,49 @@
     </p>
   </section>
 
+  <!-- TIMELINE -->
   <div class="timeline">
-  <div class="timeline-line"></div>
+    <div class="timeline-line"></div>
 
-  <!-- YARA -->
-  <div class="timeline-item" data-aos="fade-right">
-    <div class="timeline-dot"></div>
-    <div class="timeline-content">
-      <img src="images/yara-logo2.png" alt="Yara Communications Logo" class="timeline-logo">
-      <h3>Yara Communications</h3>
-      <p><b>Jan–Feb 2024 (2 months)</b></p>
-      <p>Worked in the Art and Design team for campaigns and advertisement shoots, contributing to creative direction and visual communication strategies.</p>
+    <div class="timeline-item" data-aos="fade-right">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <img src="images/yara-logo2.png" alt="Yara Communications Logo" class="timeline-logo">
+        <h3>Yara Communications</h3>
+        <p><b>Jan–Feb 2024 (2 months)</b></p>
+        <p>Worked in the Art and Design team for campaigns and advertisement shoots, contributing to creative direction and visual communication strategies.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-aos="fade-left">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h3>FREELANCING</h3>
+        <p><b>Since 2024</b></p>
+        <p>Independent freelance projects in branding, packaging, and brand collaterals — from concept creation to final visual systems, helping emerging brands establish strong visual identities.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-aos="fade-right">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <img src="images/nift-logo1.png" alt="NIFT Logo" class="timeline-logo">
+        <h3>Social Media Team — NIFT</h3>
+        <p><b>2023</b></p>
+        <p>Worked as a photographer for the official social media team, capturing concept-driven narratives that strengthened the institute’s online presence.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-aos="fade-left">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <img src="images/nift-logo1.png" alt="NIFT Logo" class="timeline-logo">
+        <h3>President — Adventure & Photography Club, NIFT</h3>
+        <p><b>2023–2024</b></p>
+        <p>Led the student council’s creative initiatives, curated photography events, and developed the visual identity for the club through art direction and teamwork.</p>
+      </div>
     </div>
   </div>
-
-  <!-- FREELANCING -->
-  <div class="timeline-item" data-aos="fade-left">
-    <div class="timeline-dot"></div>
-    <div class="timeline-content">
-      <h3>FREELANCING</h3>
-      <p><b>Since 2024</b></p>
-      <p>Independent freelance projects in branding, packaging, and brand collaterals — from concept creation to final visual systems, helping emerging brands establish strong visual identities.</p>
-    </div>
-  </div>
-
-  <!-- NIFT SOCIAL MEDIA -->
-  <div class="timeline-item" data-aos="fade-right">
-    <div class="timeline-dot"></div>
-    <div class="timeline-content">
-      <img src="images/nift-logo1.png" alt="NIFT Logo" class="timeline-logo">
-      <h3>Social Media Team — NIFT</h3>
-      <p><b>2023</b></p>
-      <p>Worked as a photographer for the official social media team, capturing concept-driven narratives that strengthened the institute’s online presence.</p>
-    </div>
-  </div>
-
-  <!-- NIFT CLUB -->
-  <div class="timeline-item" data-aos="fade-left">
-    <div class="timeline-dot"></div>
-    <div class="timeline-content">
-      <img src="images/nift-logo1.png" alt="NIFT Logo" class="timeline-logo">
-      <h3>President — Adventure & Photography Club, NIFT</h3>
-      <p><b>2023–2024</b></p>
-      <p>Led the student council’s creative initiatives, curated photography events, and developed the visual identity for the club through art direction and teamwork.</p>
-    </div>
-  </div>
-</div>
-
 
   <!-- FOOTER -->
   <footer class="modern-footer">
@@ -331,7 +401,7 @@
     </nav>
 
     <div class="footer-socials">
-      <a href="https://www.instagram.com/chay_a_m?igsh=MTkzdTloaWEyOTlhOQ==" target="_blank">
+      <a href="https://www.instagram.com/chay_a_m" target="_blank">
         <i class="fab fa-instagram"></i>
       </a>
       <a href="https://www.behance.net/meenakshiramesh" target="_blank">
@@ -350,6 +420,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <script>
     AOS.init({ duration: 900, once: true });
+
+    const mobileNav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+      mobileNav.classList.toggle('active');
+      overlay.classList.toggle('active');
+    }
+
+    function closeMenu() {
+      mobileNav.classList.remove('active');
+      overlay.classList.remove('active');
+    }
   </script>
 </body>
 </html>

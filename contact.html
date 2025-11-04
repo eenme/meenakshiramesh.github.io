@@ -24,20 +24,97 @@
       font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
+
+    /* HEADER */
     header {
-      width:100%; position:fixed; top:0; left:0;
-      background: rgba(0,0,0,0.6); backdrop-filter:blur(10px);
-      padding: 20px 40px; display:flex; justify-content:center; z-index:100;
+      width:100%; 
+      position:fixed; 
+      top:0; 
+      left:0;
+      background: rgba(0,0,0,0.6); 
+      backdrop-filter:blur(10px);
+      padding: 20px 40px; 
+      display:flex; 
+      justify-content:center; 
+      align-items:center;
+      z-index:100; 
       border-bottom:1px solid rgba(255,255,255,0.1);
     }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+    }
+
     nav a {
       color: var(--text);
       font-family: 'Cormorant Garamond', serif;
       text-decoration:none;
-      font-size:1.1rem; letter-spacing:1px; margin:0 25px;
+      font-size:1.1rem; 
+      letter-spacing:1px;
       transition: color .2s ease;
     }
     nav a:hover { color: var(--muted); }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      position: absolute;
+      right: 30px;
+      top: 22px;
+      font-size: 1.5rem;
+      color: #fff;
+      cursor: pointer;
+      z-index: 200;
+    }
+
+    /* OVERLAY MENU */
+    .mobile-nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 150;
+    }
+
+    .mobile-nav-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-nav-overlay a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .mobile-nav-overlay a:hover {
+      color: var(--muted);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 25px;
+      right: 30px;
+      font-size: 1.8rem;
+      color: #fff;
+      cursor: pointer;
+    }
 
     /* CONTACT PAGE HERO */
     .contact-hero {
@@ -53,18 +130,12 @@
       margin-top: 80px;
     }
 
-    .overlay-text {
-      position: relative;
-      text-align: center;
-      color: #fff;
-      z-index: 2;
-    }
-
     .overlay-text h2 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2rem;
       letter-spacing: 1px;
       color: #fff;
+      margin: 0 20px;
     }
 
     /* Contact Section */
@@ -78,6 +149,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size:2.8rem;
       margin-bottom: 20px;
+      word-wrap: break-word;
     }
     .contact-section p {
       font-size:1.1rem;
@@ -87,7 +159,7 @@
 
     .contact-details {
       font-family: 'Inter', sans-serif;
-      font-size:1.0rem;
+      font-size:1rem;
       color: var(--text);
       margin-bottom: 60px;
       line-height: 1.8;
@@ -205,11 +277,34 @@
       letter-spacing: 1px;
     }
 
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+      .hamburger {
+        display: block;
+      }
+      .overlay-text h2 {
+        font-size: 1.4rem;
+        padding: 0 15px;
+      }
+      .contact-section {
+        padding: 80px 20px 100px;
+      }
+      .contact-section h1 {
+        font-size: 2rem;
+      }
+      .contact-section p {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
 
   <header>
+    <div class="hamburger"><i class="fas fa-bars"></i></div>
     <nav>
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
@@ -217,6 +312,14 @@
       <a href="contact.html">Contact</a>
     </nav>
   </header>
+
+  <div class="mobile-nav-overlay" id="mobileNav">
+    <span class="close-btn" id="closeNav"><i class="fas fa-times"></i></span>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
 
   <section class="contact-hero">
     <div class="overlay-text">
@@ -236,6 +339,7 @@
     <form action="https://formspree.io/f/mnnqgebl" method="POST">
       <label for="name">Name</label>
       <input type="text" id="name" name="name" required>
+
 
       <label for="email">Email</label>
       <input type="email" id="email" name="_replyto" required>
@@ -270,6 +374,26 @@
 
     <p class="footer-copy">© 2025, Meenakshi Ramesh</p>
   </footer>
+
+  <script>
+    const hamburger = document.querySelector('.hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    const closeBtn = document.getElementById('closeNav');
+
+    hamburger.addEventListener('click', () => {
+      mobileNav.classList.add('active');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      mobileNav.classList.remove('active');
+    });
+
+    mobileNav.addEventListener('click', (e) => {
+      if (e.target === mobileNav) {
+        mobileNav.classList.remove('active');
+      }
+    });
+  </script>
 
 </body>
 </html>
